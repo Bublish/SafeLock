@@ -24,8 +24,7 @@ It provides:
 2. Open Chrome and go to `chrome://extensions`.
 3. Enable **Developer mode**.
 4. Click **Load unpacked**.
-5. Select this folder:  
-   `/home/runner/work/SafeLock/SafeLock`
+5. Select your local SafeLock project folder (the folder containing `manifest.json`).
 
 ## How to Use
 
@@ -69,4 +68,3 @@ From `manifest.json`:
 
 - SafeLock runs locally as a browser extension.
 - Generated passwords are not sent to a remote backend by this project.
-
