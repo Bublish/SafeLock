@@ -52,7 +52,7 @@ const previewNumbers = document.getElementById("previewNumbers");
 const previewSpecial = document.getElementById("previewSpecial");
 
 let isExpanded = false;
-let copyUsedForCurrentValue = false;
+const CLIPBOARD_CLEAR_DELAY_MS = 10000;
 
 // ── Crypto helpers ────────────────────────────────────────────────────────────
 function randomChar(str) {
@@ -175,10 +175,11 @@ function regenAndDisplay() {
 }
 
 function resetCopyState() {
-  copyUsedForCurrentValue = false;
   copyBtn.disabled = false;
   copyBtn.textContent = "Copy Password";
   copyBtn.classList.remove("copied");
+  copyBtn.title = "";
+  copyBtn.setAttribute("aria-label", "Copy password");
 }
 
 // ── Preview panel ─────────────────────────────────────────────────────────────
@@ -206,22 +207,21 @@ regenBtn.addEventListener("click", () => {
 
 copyBtn.addEventListener("click", async () => {
   const pwd = passwordField.value;
-  if (!pwd || copyUsedForCurrentValue) return;
+  if (!pwd) return;
   try {
     await navigator.clipboard.writeText(pwd);
   } catch {
     passwordField.select();
     document.execCommand("copy");
   }
-  copyUsedForCurrentValue = true;
   copyBtn.textContent = "Copied Once";
   copyBtn.classList.add("copied");
   copyBtn.disabled = true;
-  passwordField.value = "";
-  clearStrength();
+  copyBtn.title = "Generate or edit password to enable copy again";
+  copyBtn.setAttribute("aria-label", "Copied once. Generate or edit password to copy again.");
   setTimeout(() => {
     navigator.clipboard.writeText("").catch(() => {});
-  }, 30000);
+  }, CLIPBOARD_CLEAR_DELAY_MS);
 });
 
 lengthSlider.addEventListener("input", () => {
