@@ -52,6 +52,8 @@ const previewNumbers = document.getElementById("previewNumbers");
 const previewSpecial = document.getElementById("previewSpecial");
 
 let isExpanded = false;
+// 10s balances usability (time to paste) and exposure window; clipboard-history
+// managers may still retain entries, so this is best-effort risk reduction only.
 const CLIPBOARD_CLEAR_DELAY_MS = 10000;
 
 // ── Crypto helpers ────────────────────────────────────────────────────────────
@@ -217,7 +219,7 @@ copyBtn.addEventListener("click", async () => {
   copyBtn.textContent = "Copied Once";
   copyBtn.classList.add("copied");
   copyBtn.disabled = true;
-  copyBtn.title = "Generate or edit password to enable copy again";
+  copyBtn.title = "Copied once. Clipboard clear is best-effort in ~10s; regenerate/edit to copy again.";
   copyBtn.setAttribute("aria-label", "Copied once. Generate or edit password to copy again.");
   setTimeout(() => {
     navigator.clipboard.writeText("").catch(() => {});
