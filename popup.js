@@ -231,7 +231,7 @@ copyBtn.addEventListener("click", async () => {
   pendingClipboardClearTimer = setTimeout(() => {
     pendingClipboardClearTimer = null;
     navigator.clipboard.writeText("").catch((err) => {
-      console.warn("SafeLock: best-effort clipboard clear failed.", err);
+      console.warn("SafeLock: best-effort clipboard clear failed; password may remain in clipboard history.", err);
     });
   }, CLIPBOARD_CLEAR_DELAY_MS);
 });
