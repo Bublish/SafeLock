@@ -140,6 +140,10 @@ body {
 .btn-primary:hover  { background: #a93226; }
 .btn-primary:active { background: #922b21; }
 .btn-primary.copied { background: #27ae60; }
+.btn-primary:disabled {
+  background: #9e9e9e;
+  cursor: not-allowed;
+}
 
 /* ── Divider ─────────────────────────────────────────────────────────────────── */
 .divider {

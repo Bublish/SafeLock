@@ -52,6 +52,7 @@ const previewNumbers = document.getElementById("previewNumbers");
 const previewSpecial = document.getElementById("previewSpecial");
 
 let isExpanded = false;
+let copyUsedForCurrentValue = false;
 
 // ── Crypto helpers ────────────────────────────────────────────────────────────
 function randomChar(str) {
@@ -170,6 +171,14 @@ function regenAndDisplay() {
   const pwd = generatePassword(settings);
   passwordField.value = pwd;
   evaluateGenerated(settings, pwd);
+  resetCopyState();
+}
+
+function resetCopyState() {
+  copyUsedForCurrentValue = false;
+  copyBtn.disabled = false;
+  copyBtn.textContent = "Copy Password";
+  copyBtn.classList.remove("copied");
 }
 
 // ── Preview panel ─────────────────────────────────────────────────────────────
@@ -197,19 +206,22 @@ regenBtn.addEventListener("click", () => {
 
 copyBtn.addEventListener("click", async () => {
   const pwd = passwordField.value;
-  if (!pwd) return;
+  if (!pwd || copyUsedForCurrentValue) return;
   try {
     await navigator.clipboard.writeText(pwd);
   } catch {
     passwordField.select();
     document.execCommand("copy");
   }
-  copyBtn.textContent = "Copied!";
+  copyUsedForCurrentValue = true;
+  copyBtn.textContent = "Copied Once";
   copyBtn.classList.add("copied");
+  copyBtn.disabled = true;
+  passwordField.value = "";
+  clearStrength();
   setTimeout(() => {
-    copyBtn.textContent = "Copy Password";
-    copyBtn.classList.remove("copied");
-  }, 1500);
+    navigator.clipboard.writeText("").catch(() => {});
+  }, 30000);
 });
 
 lengthSlider.addEventListener("input", () => {
@@ -233,6 +245,7 @@ lengthSlider.addEventListener("input", () => {
 });
 
 passwordField.addEventListener("input", () => {
+  resetCopyState();
   evaluateManual(passwordField.value);
 });
 
