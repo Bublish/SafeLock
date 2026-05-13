@@ -52,8 +52,9 @@ const previewNumbers = document.getElementById("previewNumbers");
 const previewSpecial = document.getElementById("previewSpecial");
 
 let isExpanded = false;
-// 10s balances usability (time to paste) and exposure window; clipboard-history
-// managers may still retain entries, so this is best-effort risk reduction only.
+// 10s balances usability (time to paste) and exposure window. This targets the
+// primary clipboard only; clipboard-history managers or alternate buffers (for
+// example X11 selections) may still retain entries, so this is best-effort only.
 const CLIPBOARD_CLEAR_DELAY_MS = 10000;
 const CLIPBOARD_CLEAR_DELAY_SECONDS = CLIPBOARD_CLEAR_DELAY_MS / 1000;
 let pendingClipboardClearTimer = null;
@@ -229,7 +230,9 @@ copyBtn.addEventListener("click", async () => {
   copyBtn.setAttribute("aria-label", "Copied once. Generate or edit password to copy again.");
   pendingClipboardClearTimer = setTimeout(() => {
     pendingClipboardClearTimer = null;
-    navigator.clipboard.writeText("").catch(() => {});
+    navigator.clipboard.writeText("").catch((err) => {
+      console.warn("SafeLock: best-effort clipboard clear failed.", err);
+    });
   }, CLIPBOARD_CLEAR_DELAY_MS);
 });
 
