@@ -55,6 +55,8 @@ let isExpanded = false;
 // 10s balances usability (time to paste) and exposure window; clipboard-history
 // managers may still retain entries, so this is best-effort risk reduction only.
 const CLIPBOARD_CLEAR_DELAY_MS = 10000;
+const CLIPBOARD_CLEAR_DELAY_SECONDS = CLIPBOARD_CLEAR_DELAY_MS / 1000;
+let pendingClipboardClearTimer = null;
 
 // ── Crypto helpers ────────────────────────────────────────────────────────────
 function randomChar(str) {
@@ -177,6 +179,10 @@ function regenAndDisplay() {
 }
 
 function resetCopyState() {
+  if (pendingClipboardClearTimer !== null) {
+    clearTimeout(pendingClipboardClearTimer);
+    pendingClipboardClearTimer = null;
+  }
   copyBtn.disabled = false;
   copyBtn.textContent = "Copy Password";
   copyBtn.classList.remove("copied");
@@ -219,9 +225,10 @@ copyBtn.addEventListener("click", async () => {
   copyBtn.textContent = "Copied Once";
   copyBtn.classList.add("copied");
   copyBtn.disabled = true;
-  copyBtn.title = "Copied once. Clipboard clear is best-effort in ~10s; regenerate/edit to copy again.";
+  copyBtn.title = `Copied once. Clipboard clear is best-effort in ~${CLIPBOARD_CLEAR_DELAY_SECONDS}s; regenerate/edit to copy again.`;
   copyBtn.setAttribute("aria-label", "Copied once. Generate or edit password to copy again.");
-  setTimeout(() => {
+  pendingClipboardClearTimer = setTimeout(() => {
+    pendingClipboardClearTimer = null;
     navigator.clipboard.writeText("").catch(() => {});
   }, CLIPBOARD_CLEAR_DELAY_MS);
 });
