@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SafeLock</title>
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+
+  <header class="header">
+    <img src="resources/SafeLock.svg" alt="" class="logo" />
+    <span class="title">SafeLock</span>
+  </header>
+
+  <div class="section">
+    <div class="password-row">
+      <input type="text" id="passwordField" class="password-input"
+             autocomplete="off" spellcheck="false" placeholder="Generated password" />
+      <button id="regenBtn" class="icon-btn" title="Regenerate">&#x21BA;</button>
+    </div>
+
+    <div class="strength-bar-track">
+      <div id="strengthBar" class="strength-bar"></div>
+    </div>
+    <div class="strength-label-row">
+      <span id="strengthLabel" class="strength-label">—</span>
+    </div>
+
+    <button id="copyBtn" class="btn-primary">Copy Password</button>
+  </div>
+
+  <hr class="divider" />
+
+  <div class="section">
+    <div class="slider-header">
+      <label for="lengthSlider">Password Length:</label>
+      <span id="lengthDisplay" class="length-value">16</span>
+    </div>
+    <input type="range" id="lengthSlider" min="8" max="64" value="16" class="slider" />
+  </div>
+
+  <div class="checkboxes">
+    <label class="cb-label">
+      <input type="checkbox" id="cbUpper" checked />
+      Uppercase (A-Z)
+    </label>
+    <label class="cb-label">
+      <input type="checkbox" id="cbLower" checked />
+      Lowercase (a-z)
+    </label>
+    <label class="cb-label">
+      <input type="checkbox" id="cbNumbers" checked />
+      Numbers (0-9)
+    </label>
+    <label class="cb-label">
+      <input type="checkbox" id="cbSpecial" checked />
+      Special (!@#…)
+    </label>
+  </div>
+
+  <div class="section expand-section">
+    <button id="expandToggle" class="toggle-link">Expand &#9654;</button>
+    <div id="charPreview" class="char-preview hidden">
+      <div id="previewUpper" class="preview-row">
+        <span class="charset-label">Uppercase:</span>
+        <span class="charset-chars">A B C D E F G H I J K L M N O P Q R S T U V W X Y Z</span>
+      </div>
+      <div id="previewLower" class="preview-row">
+        <span class="charset-label">Lowercase:</span>
+        <span class="charset-chars">a b c d e f g h i j k l m n o p q r s t u v w x y z</span>
+      </div>
+      <div id="previewNumbers" class="preview-row">
+        <span class="charset-label">Numbers:</span>
+        <span class="charset-chars">0 1 2 3 4 5 6 7 8 9</span>
+      </div>
+      <div id="previewSpecial" class="preview-row">
+        <span class="charset-label">Special:</span>
+        <span class="charset-chars">! @ # $ % ^ &amp; * ( ) _ + - = [ ] { } | ; : , . &lt; &gt; ?</span>
+      </div>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
