@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "SafeLock",
+  "name": "SafeLock - Password Generator",
   "version": "1.0.0",
   "description": "Secure password generator with QuickGen context menu — right-click any field to generate & paste.",
   "icons": {
@@ -9,8 +9,8 @@
     "128": "icons/icon128.png"
   },
   "action": {
-    "default_popup": "popup.html",
-    "default_title": "SafeLock",
+    "default_popup": "popup/popup.html",
+    "default_title": "SafeLock - Password Generator",
     "default_icon": {
       "16":  "icons/icon16.png",
       "48":  "icons/icon48.png",
@@ -23,7 +23,7 @@
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["content.js"],
+      "js": ["scripts/content.js"],
       "run_at": "document_idle"
     }
   ],
